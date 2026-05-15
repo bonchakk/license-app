@@ -1,21 +1,36 @@
 version: '5.1.3'
 
 services:
-  license-service:
-    image: license:0.0.1-SNAPSHOT
-
-    ports:
-      - "8080:8080"
-    
+  postgres:
+    image: postgres:16-alpine
+    container_name: ostock-postgres
     environment:
-      SPRING_PROFILES_ACTIVE: "dev"
-      SPRING_CLOUD_CONFIG_URI: http://host.docker.internal:8071
+      POSTGRES_DB: ostock_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      
+volumes:
+  postgres_data:
 
-    networks:
-      backend:
-        aliases:
-          - "license-service"
+  # license-service:
+  #   image: license:0.0.1-SNAPSHOT
 
-networks:
-  backend:
-    driver: bridge
+  #   ports:
+  #     - "8080:8080"
+    
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: "dev"
+  #     SPRING_CLOUD_CONFIG_URI: http://host.docker.internal:8071
+
+  #   networks:
+  #     backend:
+  #       aliases:
+  #         - "license-service"
+
+# networks:
+#   backend:
+#     driver: bridge
